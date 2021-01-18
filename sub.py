@@ -1,6 +1,6 @@
 #!/bin/env python
 
-import os
+import os, curses
 from modulos.subs import subs
 from modulos.descarga import descarga
 from modulos.update import update

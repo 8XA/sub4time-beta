@@ -69,7 +69,7 @@ while ipalabra.lower() != "s":
     buscar_depurado.append(buscar[int(ipalabra)])
     print(buscar_depurado)
 
-listaSubs = subs(buscar_depurado,1)
+listaSubs = subs(buscar_depurado)
 
 #Selecciona subtítulo
 #os.system("clear")
@@ -83,14 +83,16 @@ isub = int(input("Elige uno: "))
 #Descarga subtitulo elegido
 link = descarga(listaSubs[isub][2])
 os.system("rm -r tmp")
-os.system("mkdir tmp && wget -P tmp " + link[0] + ".rar")
+os.system("mkdir tmp")
+os.system("wget -P tmp " + link[0] + ".rar")
 os.system("wget -P tmp " + link[0] + ".zip")
 
-os.system("unzip -o " + "tmp/" + link[1] + ".zip -d tmp/")
-os.system("unrar x -y " + "tmp/" + link[1] + ".rar tmp/")
+if os.popen("find tmp -iname *.zip").read() != "":
+    os.system("unzip -o " + "tmp/" + link[1] + ".zip -d tmp/")
+if os.popen("find tmp -iname *.rar").read() != "":
+    os.system("unrar x -y " + "tmp/" + link[1] + ".rar tmp/")
 
-
-ruta_sub = "'" + os.popen("find tmp -iname *.srt").read()[:-1] + "'"
+ruta_sub = os.popen("find tmp -iname *.srt").read()[:-1]
 os.system('mv "' + ruta_sub + '" "' + videos[iv][:-4] + '.srt"')
 #os.system("rm -r tmp")
 

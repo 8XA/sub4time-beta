@@ -58,7 +58,7 @@ for x in range(len(buscar)):
 buscar_depurado = []
 ipalabra = ""
 while ipalabra.lower() != "s":
-    ipalabra = input("Palabra:")
+    ipalabra = input("Palabra: ")
 
     if ipalabra.lower() == "t":
         buscar_depurado = buscar
@@ -87,13 +87,31 @@ os.system("mkdir tmp")
 os.system("wget -P tmp " + link[0] + ".rar")
 os.system("wget -P tmp " + link[0] + ".zip")
 
+#Descomprime subtitulo
 if os.popen("find tmp -iname *.zip").read() != "":
     os.system("unzip -o " + "tmp/" + link[1] + ".zip -d tmp/")
 if os.popen("find tmp -iname *.rar").read() != "":
     os.system("unrar x -y " + "tmp/" + link[1] + ".rar tmp/")
 
-ruta_sub = os.popen("find tmp -iname *.srt").read()[:-1]
-os.system('mv "' + ruta_sub + '" "' + videos[iv][:-4] + '.srt"')
-#os.system("rm -r tmp")
+#Subtitulos descomprimidos como lista de rutas
+if os.popen("find tmp -iname *.srt").read() != "":
+    ruta_sub = [ruta for ruta in os.popen("find tmp -iname *.srt").read().split("\n") if ruta != ""]
+    ext = ".srt"
+if os.popen("find tmp -iname *.ssa").read() != "":
+    ruta_sub = [ruta for ruta in os.popen("find tmp -iname *.ssa").read().split("\n") if ruta != ""]
+    ext = ".ssa"
+
+#Impresión de opciones de un solo comprimido
+os.system("clear")
+if len(ruta_sub) > 1:
+    for x in range(len(ruta_sub)):
+        print(str(x) + ": " + ruta_sub[x][4:])
+    nsub = int(input("Ingresa el número de subtítulo: "))
+else:
+    nsub = 0
+
+#Mueve el subtitulo elegido a la carpeta de la pelicula
+os.system('mv "' + ruta_sub[nsub] + '" "' + videos[iv][:-4] + ext + '"')
+os.system("rm -r tmp")
 
 print("listo")

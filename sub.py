@@ -91,7 +91,7 @@ os.system("unrar x -y " + "tmp/" + link[1] + ".rar tmp/")
 
 
 ruta_sub = "'" + os.popen("find tmp -iname *.srt").read()[:-1] + "'"
-os.system("mv '" + ruta_sub + "' '" + videos[iv][:-4] + ".srt'")
+os.system('mv "' + ruta_sub + '" "' + videos[iv][:-4] + '.srt"')
 #os.system("rm -r tmp")
 
 print("listo")

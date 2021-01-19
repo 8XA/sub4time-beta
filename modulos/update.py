@@ -3,7 +3,7 @@
 import os, time
 
 def update(num_cols):
-    rabs = '/data/data/com.termux/files/usr/share/downpipe/sub4time/'
+    rabs = '/data/data/com.termux/files/usr/share/sub4time/sub4time/'
     os.system("clear")
     print("Verificando actualizaciones de script...\n")
     remoto = os.popen('cd '+ rabs + ' && git fetch origin master && git checkout remotes/origin/master').read()

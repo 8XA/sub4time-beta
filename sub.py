@@ -97,7 +97,7 @@ if os.popen("find tmp -iname *.rar").read() != "":
 if os.popen("find tmp -iname *.srt").read() != "":
     ruta_sub = [ruta for ruta in os.popen("find tmp -iname *.srt").read().split("\n") if ruta != ""]
     ext = ".srt"
-if os.popen("find tmp -iname *.ssa").read() != "":
+elif os.popen("find tmp -iname *.ssa").read() != "":
     ruta_sub = [ruta for ruta in os.popen("find tmp -iname *.ssa").read().split("\n") if ruta != ""]
     ext = ".ssa"
 

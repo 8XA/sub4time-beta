@@ -1,7 +1,7 @@
 #!/bin/env python
 
 """
-Recibe un enlace de descarga. Con él, descarga el subtítulo y lo descomprime
+Recibe un enlace de descarga. Con él, retorna el enlace directo y el ID de archivo
 """
 
 import os

@@ -48,7 +48,7 @@ nombres = [ruta[len(ruta) - [ruta[x] for x in range(len(ruta)-1,-1,-1)].index("/
 
 #IMPRIME PANTALLA
 print(num_cols*"=")
-titulo = "SUB4TIME Beta v1.2.0"
+titulo = "SUB4TIME Beta v1.3.0"
 titulo2 = "Lista"
 print(((num_cols-len(titulo))//2)*" " + titulo)
 print(num_cols*"=")
@@ -118,29 +118,37 @@ while busqueda_correcta.lower() != "s":
 #SALTA EL ALGORITMO DE BÚSQUEDA SI SE INGRESÓ DIRECTAMENTE EL LINK DE DESCARGA DEL SUBTÍTULO   
 if urlDirecta == False:
     #LISTA CON RESULTADO DE BUSQUEDA
-    listaSubs = subs(buscar_depurado)
+    listaSubsBruta, listaSubs = subs(buscar_depurado), []
+    for x in listaSubsBruta:
+        if x not in listaSubs:
+            listaSubs.append(x)
 
 
     #DEFINE LOS SUBTITULOS A MOSTRAR
-    isub, subxpag, filtro = "", 50, []
+    isub, subxpag, filtro, pagina = "", 50, [], 0
     #letras = string.ascii_letters + "ÁÉÍÓÚÑáéíóúñ"
     while "".join([x for x in isub if x in "0123456789"]) != isub or isub == "":
         if filtro == []:
-            listaSubsF = [x for x in listaSubs]
+            listaSubsF = [listaSubs[x][:2]+[x] for x in range(len(listaSubs))]
         else:
-            listaSubsF = [listaSubs[x] for x in range(len(listaSubs)) if (len(filtro) == len([palabra for palabra in filtro if (palabra.lower() in ((listaSubs[x][0]+listaSubs[x][1]).lower()))]))]
+            listaSubsF = [listaSubs[x][:2]+[x] for x in range(len(listaSubs)) if (len(filtro) == len([palabra for palabra in filtro if (palabra.lower() in ((listaSubs[x][0]+listaSubs[x][1]).lower()))]))]
 
-        pagina = 1
-        num_subs = len(listaSubsF)
+        #NÚMERO DE PÁGINAS
+        paginas = len(listaSubsF)//subxpag
+        if len(listaSubsF)/subxpag != len(listaSubsF)//subxpag:
+            paginas += 1
 
         #IMPRIME, NUMERA SUBTÍTULOS Y NAVEGA A TRAVÉS DE ELLOS
-        for x in range(len(listaSubsF)):
-            print("\n" + num_cols*"=")
-            print(str(x) + ": " + listaSubsF[x][0])
-            print(num_cols*"-")
-            print(listaSubsF[x][1])
+        os.system("clear")
+        for x in range((pagina+1)*subxpag-1, pagina*subxpag-1, -1):
+            if len(listaSubsF) > x:
+                print("\n" + num_cols*"=")
+                print(str(x) + ": ID " + str(listaSubsF[x][2]) + " -> " + listaSubsF[x][0])
+                print(num_cols*"-")
+                print(listaSubsF[x][1])
         print(num_cols*"=")
 
+        #IMPRIME OPCIONES
         print("\n\n" + num_cols*"=")
         print(((num_cols-9)//2)*" " + "OPCIONES:")
         print(num_cols*"-")
@@ -152,21 +160,29 @@ if urlDirecta == False:
         print("Descargar sub: num")
         print("Salir        : q")
         print(num_cols*"=")
+        print("Pagina:",pagina+1, "de",paginas)
         isub = input(": ")
+
+        #NAVEGANDO
         if isub.lower() == "a":
             pagina -= 1
-        elif isub.lower() == "":
+            if pagina == -1:
+                pagina = paginas-1
+        elif isub == "":
             pagina +=1
+            if pagina == paginas:
+                pagina = 0
+
         elif isub.lower() == "f":
-            filtro = []
+            filtro, pagina = [], 0
         elif isub.lower() == "q":
             salir()
         else:
-            filtro = [x for x in isub.split(",") if x != ""]
+            filtro, pagina = [x for x in isub.split(",") if x != ""], 0
 
 
     #SELECCIÓN DE SUBTÍTULO
-    link = descarga(listaSubsF[int(isub)][2])
+    link = descarga(listaSubs[int(isub)][2])
 else:
     link = descarga(ibusq)
 

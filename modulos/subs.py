@@ -5,13 +5,13 @@ Recibe una lista de palabras de busqueda y el número de página de busqueda. Re
 import os
 
 def subs(palabras):
-    subs, subspag, pagina = [], [], 0
-    while subspag == []:
+    subs, subspag, pagina = [], [1], 0
+    while subspag != []:
         pagina+=1
 
         #Búsqueda
         suma = "+".join(palabras)
-        linkBusqueda = "https://www.subdivx.com/index.php?buscar=" + suma + "&accion=5&masdesc=&subtitulos=1&realiza_b=" + str(pagina)
+        linkBusqueda = "https://www.subdivx.com/index.php?buscar=" + suma + "&accion=5&masdesc=&subtitulos=1&realiza_b=1=&pg=" + str(pagina)
         txtBusqueda = os.popen("curl '" + linkBusqueda + "' | iconv -f iso-8859-1 -t utf-8").read()
         
         x, subspag = 0, []

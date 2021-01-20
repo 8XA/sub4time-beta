@@ -1,2 +1,2 @@
-- Muestra subtitulos por páginas, en orden ascendente
-- Descarta subtítulos repetidos
+- No se cicla con busquedas nulas.
+- Lista los subtitulos de la busqueda completa.

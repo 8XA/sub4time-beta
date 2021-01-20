@@ -1,6 +1,6 @@
 #!/bin/env python
 
-import os, curses
+import os, curses 
 from modulos.subs import subs
 from modulos.descarga import descarga
 from modulos.update import update
@@ -35,48 +35,78 @@ videos = [video for video in videos if video != ""]
 nombres = [ruta[len(ruta) - [ruta[x] for x in range(len(ruta)-1,-1,-1)].index("/"):] for ruta in videos]
 
 
+#Imprime pantalla
+print(num_cols*"=")
+titulo = "SUB4TIME Alpha v1.1.0"
+print(((num_cols-len(titulo))//2)*" " + titulo)
+print(num_cols*"=")
+
+
 #Imprime nombres de videos
 for x in range(len(nombres)):
     print(str(x) + ": " + nombres[x])
 
 
 #Selecciona nombre de video
-iv = int(input("Video: "))
+print(num_cols*"=")
+iv = int(input("Número de video: "))
 
 
 #Lista de palabras para búsqueda
-buscar = list(nombres[iv])
-while "." in buscar:
-    buscar[buscar.index(".")] = " "
-buscar = "".join(buscar).split(" ")
-buscar = [palabra for palabra in buscar if (palabra != " " and palabra.lower() not in extensiones)]
+buscar = [palabra for palabra in " ".join(nombres[iv].split(".")).split(" ") if (palabra != " " and palabra.lower() not in extensiones)]
 
 
 #Búsqueda
-for x in range(len(buscar)):
-    print(str(x) + ": " + buscar[x])
-buscar_depurado = []
-ipalabra = ""
-while ipalabra.lower() != "s":
-    ipalabra = input("Palabra: ")
+busqueda_correcta = ""
+while busqueda_correcta.lower() != "s":
+    os.system("clear")
+    print(num_cols*"=")
+    titulo = "LISTA DE PALABRAS"
+    print(((num_cols-len(titulo))//2)*" " + titulo + "\n" + num_cols*"-")
+    for x in range(len(buscar)):
+        print(str(x) + ": " + buscar[x])
 
-    if ipalabra.lower() == "t":
+    #Palabras de busqueda
+    buscar_depurado = []
+    print(num_cols*"=")
+    print("Opciones:\n" + num_cols*"-")
+    print("""- URL subdivx
+- Palabras de la lista: num0,num1,num2
+- Lista completa: t
+- Ingresa una búsqueda personalizada""")
+    print(num_cols*"=")
+    ibusq = input(": ")
+
+    #Si es una URL
+    if ibusq[:24].lower() == "https://www.subdivx.com/":
+        i = input("URL B)")
+        pass
+    elif ibusq.lower() == "t":
         buscar_depurado = buscar
-        break
-    elif ipalabra.lower() == "s":
-        break
+    #Si es una seleccion de palabras
+    elif "".join([x for x in ibusq if x in "0123456789,"]) == ibusq:
+        buscar_depurado = [buscar[int(indice)] for indice in [x for x in ibusq.split(",") if x != ""]]
+    #Si es búsqueda personalizada
+    else:
+        buscar_depurado = ibusq.split(" ")
 
-    buscar_depurado.append(buscar[int(ipalabra)])
+    #Corroborando información de búsqueda
+    print("\nTus palabras de búsqueda son:")
     print(buscar_depurado)
+    busqueda_correcta = input(num_cols*"=" +"Es esto correcto (s|n)? ")
 
+
+#Lista con resultado de busqueda
 listaSubs = subs(buscar_depurado)
 
 #Selecciona subtítulo
 #os.system("clear")
 for x in range(len(listaSubs)):
-    print(x, listaSubs[x][0])
-    print(listaSubs[x][1])
+    print("\n" + num_cols*"=")
+    print(str(x) + ": " + listaSubs[x][0])
     print(num_cols*"-")
+    print(listaSubs[x][1])
+print(num_cols*"=")
 isub = int(input("Elige uno: "))
 
 

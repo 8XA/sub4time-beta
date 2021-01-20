@@ -1,6 +1,6 @@
 #!/bin/env python
 
-import os, curses 
+import os, curses, sys, string
 from modulos.subs import subs
 from modulos.descarga import descarga
 from modulos.update import update
@@ -9,6 +9,13 @@ from modulos.update import update
 rabs = "/data/data/com.termux/files/home/"
 rabs = ""
 rvids = "storage/shared/time4popcorn/downloads"
+
+
+#FUNCIÓN SALIR
+def salir():
+    #FINALIZAR SCRIPT
+    i = input("\nPresiona enter para salir.")
+    sys.exit()
 
 
 #DETERMINANDO EL NÚMERO DE CARACTERES POR LÍNEA
@@ -20,10 +27,14 @@ def numcols():
     return num_cols
 num_cols = numcols()
 
-#Actualizar
-update(num_cols)
 
-#Videos con su ruta
+#ACTUALIZAR
+if update(num_cols) == 1:
+    print("Debes reiniciar Termux.")
+    salir()
+
+
+#VIDEOS CON SU RUTA
 extensiones = ["mp4", "mkv", "avi"]
 videos = []
 for ext in extensiones:
@@ -31,32 +42,35 @@ for ext in extensiones:
 videos = [video for video in videos if video != ""]
 
 
-#Nombre de los videos
+#NOMBRES DE LOS VIDEOS
 nombres = [ruta[len(ruta) - [ruta[x] for x in range(len(ruta)-1,-1,-1)].index("/"):] for ruta in videos]
 
 
-#Imprime pantalla
+#IMPRIME PANTALLA
 print(num_cols*"=")
-titulo = "SUB4TIME Alpha v1.1.1"
+titulo = "SUB4TIME Beta v1.2.0"
+titulo2 = "Lista"
 print(((num_cols-len(titulo))//2)*" " + titulo)
 print(num_cols*"=")
+print(((num_cols-len(titulo2))//2)*" " + titulo2)
 
 
-#Imprime nombres de videos
+#IMPRIME NOMBRES DE VIDEOS
 for x in range(len(nombres)):
-    print(str(x) + ": " + nombres[x])
     print(num_cols*"-")
+    print(str(x) + ": " + nombres[x])
 
-#Selecciona nombre de video
+
+#SELECCIONA NOMBRE DE VIDEO
 print(num_cols*"=")
 iv = int(input("Número de video: "))
 
 
-#Lista de palabras para búsqueda
+#LISTA DE PALABRAS PARA BÚSQUEDA
 buscar = [palabra for palabra in " ".join(nombres[iv].split(".")).split(" ") if (palabra != " " and palabra.lower() not in extensiones)]
 
 
-#Búsqueda
+#BÚSQUEDA
 busqueda_correcta = ""
 while busqueda_correcta.lower() != "s":
     os.system("clear")
@@ -66,10 +80,11 @@ while busqueda_correcta.lower() != "s":
     for x in range(len(buscar)):
         print(str(x) + ": " + buscar[x])
 
-    #Palabras de busqueda
+    #PALABRAS DE BUSQUEDA
     buscar_depurado = []
     print(num_cols*"=")
-    print("Opciones:\n" + num_cols*"-")
+    print(((num_cols-9)//2)*" " + "OPCIONES:")
+    print(num_cols*"-")
     print("""- URL subdivx
 - Palabras de la lista: num0,num1,num2
 - Lista completa: t
@@ -77,53 +92,100 @@ while busqueda_correcta.lower() != "s":
     print(num_cols*"=")
     ibusq = input(": ")
 
-    #Si es una URL
+    urlDirecta = False
+
+    #SI ES UNA URL
     if ibusq[:24].lower() == "https://www.subdivx.com/":
-        i = input("URL B)")
-        pass
+        urlDirecta = True
     elif ibusq.lower() == "t":
         buscar_depurado = buscar
-    #Si es una seleccion de palabras
+    #SI ES UNA SELECCION DE PALABRAS
     elif "".join([x for x in ibusq if x in "0123456789,"]) == ibusq:
         buscar_depurado = [buscar[int(indice)] for indice in [x for x in ibusq.split(",") if x != ""]]
-    #Si es búsqueda personalizada
+    #SI ES BÚSQUEDA PERSONALIZADA
     else:
         buscar_depurado = ibusq.split(" ")
 
-    #Corroborando información de búsqueda
-    print("\nTus palabras de búsqueda son:")
-    print(buscar_depurado)
+    #CORROBORANDO INFORMACIÓN DE BÚSQUEDA
+    if urlDirecta == False:
+        print("\nTus palabras de búsqueda son:")
+        print(buscar_depurado)
+    else:
+        print("\nSeleccionaste descargar el subtítulo:\n----------\n" + ibusq + "\n----------\nY asignarlo a la película: " + nombres[iv])
     busqueda_correcta = input(num_cols*"=" +"Es esto correcto (s|n)? ")
 
 
-#Lista con resultado de busqueda
-listaSubs = subs(buscar_depurado)
-
-#Selecciona subtítulo
-#os.system("clear")
-for x in range(len(listaSubs)):
-    print("\n" + num_cols*"=")
-    print(str(x) + ": " + listaSubs[x][0])
-    print(num_cols*"-")
-    print(listaSubs[x][1])
-print(num_cols*"=")
-isub = int(input("Elige uno: "))
+#SALTA EL ALGORITMO DE BÚSQUEDA SI SE INGRESÓ DIRECTAMENTE EL LINK DE DESCARGA DEL SUBTÍTULO   
+if urlDirecta == False:
+    #LISTA CON RESULTADO DE BUSQUEDA
+    listaSubs = subs(buscar_depurado)
 
 
-#Descarga subtitulo elegido
-link = descarga(listaSubs[isub][2])
+    #DEFINE LOS SUBTITULOS A MOSTRAR
+    isub, subxpag, filtro = "", 50, []
+    #letras = string.ascii_letters + "ÁÉÍÓÚÑáéíóúñ"
+    while "".join([x for x in isub if x in "0123456789"]) != isub or isub == "":
+        if filtro == []:
+            listaSubsF = [x for x in listaSubs]
+        else:
+            listaSubsF = [listaSubs[x] for x in range(len(listaSubs)) if (len(filtro) == len([palabra for palabra in filtro if (palabra.lower() in ((listaSubs[x][0]+listaSubs[x][1]).lower()))]))]
+
+        pagina = 1
+        num_subs = len(listaSubsF)
+
+        #IMPRIME, NUMERA SUBTÍTULOS Y NAVEGA A TRAVÉS DE ELLOS
+        for x in range(len(listaSubsF)):
+            print("\n" + num_cols*"=")
+            print(str(x) + ": " + listaSubsF[x][0])
+            print(num_cols*"-")
+            print(listaSubsF[x][1])
+        print(num_cols*"=")
+
+        print("\n\n" + num_cols*"=")
+        print(((num_cols-9)//2)*" " + "OPCIONES:")
+        print(num_cols*"-")
+        print("Navegar entre páginas")
+        print("Anterior  <- : a")
+        print("Siguiente -> : Enter")
+        print("Filtrar subs : palabra1,palabra2")
+        print("Quitar filtro: f")
+        print("Descargar sub: num")
+        print("Salir        : q")
+        print(num_cols*"=")
+        isub = input(": ")
+        if isub.lower() == "a":
+            pagina -= 1
+        elif isub.lower() == "":
+            pagina +=1
+        elif isub.lower() == "f":
+            filtro = []
+        elif isub.lower() == "q":
+            salir()
+        else:
+            filtro = [x for x in isub.split(",") if x != ""]
+
+
+    #SELECCIÓN DE SUBTÍTULO
+    link = descarga(listaSubsF[int(isub)][2])
+else:
+    link = descarga(ibusq)
+
+
+#DESCARGA SUBTITULO ELEGIDO
 os.system("rm -r tmp")
 os.system("mkdir tmp")
 os.system("wget -P tmp " + link[0] + ".rar")
 os.system("wget -P tmp " + link[0] + ".zip")
 
-#Descomprime subtitulo
+
+#DESCOMPRIME SUBTITULO
 if os.popen("find tmp -iname *.zip").read() != "":
     os.system("unzip -o " + "tmp/" + link[1] + ".zip -d tmp/")
 if os.popen("find tmp -iname *.rar").read() != "":
     os.system("unrar x -y " + "tmp/" + link[1] + ".rar tmp/")
 
-#Subtitulos descomprimidos como lista de rutas
+
+#SUBTITULOS DESCOMPRIMIDOS COMO LISTA DE RUTAS
 if os.popen("find tmp -iname *.srt").read() != "":
     ruta_sub = [ruta for ruta in os.popen("find tmp -iname *.srt").read().split("\n") if ruta != ""]
     ext = ".srt"
@@ -131,7 +193,8 @@ elif os.popen("find tmp -iname *.ssa").read() != "":
     ruta_sub = [ruta for ruta in os.popen("find tmp -iname *.ssa").read().split("\n") if ruta != ""]
     ext = ".ssa"
 
-#Impresión de opciones de un solo comprimido
+
+#IMPRESIÓN DE OPCIONES DE UN SOLO COMPRIMIDO
 os.system("clear")
 if len(ruta_sub) > 1:
     for x in range(len(ruta_sub)):
@@ -140,7 +203,8 @@ if len(ruta_sub) > 1:
 else:
     nsub = 0
 
-#Mueve el subtitulo elegido a la carpeta de la pelicula
+
+#MUEVE EL SUBTITULO ELEGIDO A LA CARPETA DE LA PELICULA
 os.system('mv "' + ruta_sub[nsub] + '" "' + videos[iv][:-4] + ext + '"')
 os.system("rm -r tmp")
 

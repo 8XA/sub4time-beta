@@ -37,7 +37,7 @@ nombres = [ruta[len(ruta) - [ruta[x] for x in range(len(ruta)-1,-1,-1)].index("/
 
 #Imprime pantalla
 print(num_cols*"=")
-titulo = "SUB4TIME Alpha v1.1.0"
+titulo = "SUB4TIME Alpha v1.1.1"
 print(((num_cols-len(titulo))//2)*" " + titulo)
 print(num_cols*"=")
 
@@ -45,7 +45,7 @@ print(num_cols*"=")
 #Imprime nombres de videos
 for x in range(len(nombres)):
     print(str(x) + ": " + nombres[x])
-
+    print(num_cols*"-")
 
 #Selecciona nombre de video
 print(num_cols*"=")

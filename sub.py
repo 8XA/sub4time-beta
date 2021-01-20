@@ -48,7 +48,7 @@ nombres = [ruta[len(ruta) - [ruta[x] for x in range(len(ruta)-1,-1,-1)].index("/
 
 #IMPRIME PANTALLA
 print(num_cols*"=")
-titulo = "SUB4TIME Beta v1.3.0"
+titulo = "SUB4TIME Beta v1.3.1"
 titulo2 = "Lista"
 print(((num_cols-len(titulo))//2)*" " + titulo)
 print(num_cols*"=")
@@ -160,7 +160,7 @@ if urlDirecta == False:
         print("Descargar sub: num")
         print("Salir        : q")
         print(num_cols*"=")
-        print("Pagina:",pagina+1, "de",paginas)
+        print("Pagina:",pagina+1, "de",paginas, "-", len(listaSubsF), "subs")
         isub = input(": ")
 
         #NAVEGANDO

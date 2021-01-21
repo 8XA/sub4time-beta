@@ -4,6 +4,7 @@ import os, curses, sys, string
 from modulos.subs import subs
 from modulos.descarga import descarga
 from modulos.update import update
+from termcolor import colored
 
 
 rabs = "/data/data/com.termux/files/home/"
@@ -47,22 +48,23 @@ nombres = [ruta[len(ruta) - [ruta[x] for x in range(len(ruta)-1,-1,-1)].index("/
 
 
 #IMPRIME PANTALLA
-print(num_cols*"=")
-titulo = "SUB4TIME Beta v1.3.1"
+print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
+titulo = "SUB4TIME Beta v1.4.0"
 titulo2 = "Lista"
 print(((num_cols-len(titulo))//2)*" " + titulo)
-print(num_cols*"=")
+print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
 print(((num_cols-len(titulo2))//2)*" " + titulo2)
 
 
 #IMPRIME NOMBRES DE VIDEOS
 for x in range(len(nombres)):
     print(num_cols*"-")
-    print(str(x) + ": " + nombres[x])
+    indice = colored(str(x), 'green', attrs=['bold', 'dark'])
+    print(indice + ": " + nombres[x])
 
 
 #SELECCIONA NOMBRE DE VIDEO
-print(num_cols*"=")
+print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
 iv = int(input("Número de video: "))
 
 
@@ -74,22 +76,24 @@ buscar = [palabra for palabra in " ".join(nombres[iv].split(".")).split(" ") if 
 busqueda_correcta = ""
 while busqueda_correcta.lower() != "s":
     os.system("clear")
-    print(num_cols*"=")
+    print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
     titulo = "LISTA DE PALABRAS"
-    print(((num_cols-len(titulo))//2)*" " + titulo + "\n" + num_cols*"-")
+    print(((num_cols-len(titulo))//2)*" " + titulo)
+    print(colored(num_cols*"-", 'blue', attrs=['bold', 'dark']))
     for x in range(len(buscar)):
-        print(str(x) + ": " + buscar[x])
+        indice = colored(str(x), 'green', attrs=['bold', 'dark'])
+        print(indice + ": " + buscar[x])
 
     #PALABRAS DE BUSQUEDA
     buscar_depurado = []
-    print(num_cols*"=")
+    print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
     print(((num_cols-9)//2)*" " + "OPCIONES:")
-    print(num_cols*"-")
+    print(colored(num_cols*"-", 'blue', attrs=['bold', 'dark']))
     print("""- URL subdivx
 - Palabras de la lista: num0,num1,num2
 - Lista completa: t
 - Ingresa una búsqueda personalizada""")
-    print(num_cols*"=")
+    print(colored(num_cols*"-", 'blue', attrs=['bold', 'dark']))
     ibusq = input(": ")
 
     urlDirecta = False
@@ -112,7 +116,9 @@ while busqueda_correcta.lower() != "s":
         print(buscar_depurado)
     else:
         print("\nSeleccionaste descargar el subtítulo:\n----------\n" + ibusq + "\n----------\nY asignarlo a la película: " + nombres[iv])
-    busqueda_correcta = input(num_cols*"=" +"Es esto correcto (s|n)? ")
+    print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
+    busqueda_correcta = input("Es esto correcto (s|n)? ")
+os.system("clear")
 
 
 #SALTA EL ALGORITMO DE BÚSQUEDA SI SE INGRESÓ DIRECTAMENTE EL LINK DE DESCARGA DEL SUBTÍTULO   
@@ -142,24 +148,26 @@ if urlDirecta == False:
         os.system("clear")
         for x in range((pagina+1)*subxpag-1, pagina*subxpag-1, -1):
             if len(listaSubsF) > x:
-                print("\n" + num_cols*"=")
-                print(str(x) + ": ID " + str(listaSubsF[x][2]) + " -> " + listaSubsF[x][0])
+                print("\n")
+                print(colored(num_cols*"=", 'yellow', attrs=['bold', 'dark']))
+                print(str(x) + ": " + colored("ID " + str(listaSubsF[x][2]), 'green', attrs=['bold', 'dark']) + " -> " + listaSubsF[x][0])
                 print(num_cols*"-")
                 print(listaSubsF[x][1])
-        print(num_cols*"=")
+        print('\n')
+        print(colored(num_cols*"=", 'yellow', attrs=['bold', 'dark']))
 
         #IMPRIME OPCIONES
-        print("\n\n" + num_cols*"=")
+        print("\n")
+        print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
         print(((num_cols-9)//2)*" " + "OPCIONES:")
-        print(num_cols*"-")
-        print("Navegar entre páginas")
-        print("Anterior  <- : a")
-        print("Siguiente -> : Enter")
-        print("Filtrar subs : palabra1,palabra2")
-        print("Quitar filtro: f")
-        print("Descargar sub: num")
-        print("Salir        : q")
-        print(num_cols*"=")
+        print(colored(num_cols*"-", 'blue', attrs=['bold', 'dark']))
+        print("Pag anterior  <- : a")
+        print("Pag siguiente -> : Enter")
+        print("Filtrar subs     : palabra1,palabra2")
+        print("Quitar filtro    : f")
+        print("Descargar sub    : num")
+        print("Salir            : q")
+        print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
         print("Pagina:",pagina+1, "de",paginas, "-", len(listaSubsF), "subs")
         isub = input(": ")
 
@@ -188,6 +196,10 @@ else:
 
 
 #DESCARGA SUBTITULO ELEGIDO
+os.system("clear")
+print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
+print("Descargando subtítulo...")
+print(colored(num_cols*"-", 'blue', attrs=['bold', 'dark']))
 os.system("rm -r tmp")
 os.system("mkdir tmp")
 os.system("wget -P tmp " + link[0] + ".rar")
@@ -195,6 +207,9 @@ os.system("wget -P tmp " + link[0] + ".zip")
 
 
 #DESCOMPRIME SUBTITULO
+print(colored(num_cols*"-", 'blue', attrs=['bold', 'dark']))
+print("Descomprimiendo...")
+print(colored(num_cols*"-", 'blue', attrs=['bold', 'dark']))
 if os.popen("find tmp -iname *.zip").read() != "":
     os.system("unzip -o " + "tmp/" + link[1] + ".zip -d tmp/")
 if os.popen("find tmp -iname *.rar").read() != "":
@@ -211,8 +226,8 @@ elif os.popen("find tmp -iname *.ssa").read() != "":
 
 
 #IMPRESIÓN DE OPCIONES DE UN SOLO COMPRIMIDO
-os.system("clear")
 if len(ruta_sub) > 1:
+    os.system("clear")
     for x in range(len(ruta_sub)):
         print(str(x) + ": " + ruta_sub[x][4:])
     nsub = int(input("Ingresa el número de subtítulo: "))
@@ -221,7 +236,10 @@ else:
 
 
 #MUEVE EL SUBTITULO ELEGIDO A LA CARPETA DE LA PELICULA
+print(colored(num_cols*"-", 'blue', attrs=['bold', 'dark']))
+print("Asignando subtítulo...")
 os.system('mv "' + ruta_sub[nsub] + '" "' + videos[iv][:-4] + ext + '"')
 os.system("rm -r tmp")
 
+print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
 print("listo")

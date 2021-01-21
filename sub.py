@@ -231,7 +231,8 @@ if len(ruta_sub) > 1:
     print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
     for x in range(len(ruta_sub)):
         print(str(x) + ": " + ruta_sub[x][4:])
-    nsub = int(input("\nIngresa el número de subtítulo: "))
+    print(colored(num_cols*"-", 'blue', attrs=['bold', 'dark']))
+    nsub = int(input("Ingresa el número de subtítulo: "))
 else:
     nsub = 0
 

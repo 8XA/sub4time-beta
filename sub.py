@@ -49,7 +49,7 @@ nombres = [ruta[len(ruta) - [ruta[x] for x in range(len(ruta)-1,-1,-1)].index("/
 
 #IMPRIME PANTALLA
 print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
-titulo = "SUB4TIME Beta v1.4.2"
+titulo = "SUB4TIME Beta v1.5.0"
 titulo2 = "Lista"
 print(((num_cols-len(titulo))//2)*" " + titulo)
 print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
@@ -158,6 +158,9 @@ if urlDirecta == False:
 
         #IMPRIME OPCIONES
         print("\n")
+        print(colored(num_cols*"=", 'red', attrs=['bold', 'dark']))
+        print(((num_cols-len(nombres[iv]))//2)*" " + nombres[iv])
+        print(colored(num_cols*"=", 'red', attrs=['bold', 'dark']))
         print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
         print(((num_cols-9)//2)*" " + "OPCIONES:")
         print(colored(num_cols*"-", 'blue', attrs=['bold', 'dark']))

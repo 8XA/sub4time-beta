@@ -1,6 +1,6 @@
 #!/bin/env python
 
-import os, curses, sys, string
+import os, curses, sys, string, readline
 from modulos.subs import subs
 from modulos.descarga import descarga
 from modulos.update import update
@@ -15,7 +15,7 @@ rvids = "storage/shared/time4popcorn/downloads"
 #FUNCIÓN SALIR
 def salir():
     #FINALIZAR SCRIPT
-    i = input("\nPresiona enter para salir.")
+    print("\nPrograma finalizado.")
     sys.exit()
 
 
@@ -49,7 +49,7 @@ nombres = [ruta[len(ruta) - [ruta[x] for x in range(len(ruta)-1,-1,-1)].index("/
 
 #IMPRIME PANTALLA
 print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
-titulo = "SUB4TIME Beta v1.5.0"
+titulo = "SUB4TIME Beta v1.5.2"
 titulo2 = "Lista"
 print(((num_cols-len(titulo))//2)*" " + titulo)
 print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
@@ -65,6 +65,7 @@ for x in range(len(nombres)):
 
 #SELECCIONA NOMBRE DE VIDEO
 print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
+readline.clear_history()
 iv = int(input("Número de video: "))
 
 
@@ -74,6 +75,7 @@ buscar = [palabra for palabra in " ".join(nombres[iv].split(".")).split(" ") if 
 
 #BÚSQUEDA
 busqueda_correcta = ""
+readline.clear_history()
 while busqueda_correcta.lower() != "s":
     os.system("clear")
     print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
@@ -133,6 +135,7 @@ if urlDirecta == False:
     #DEFINE LOS SUBTITULOS A MOSTRAR
     isub, subxpag, filtro, pagina = "", 50, [], 0
     #letras = string.ascii_letters + "ÁÉÍÓÚÑáéíóúñ"
+    readline.clear_history()
     while "".join([x for x in isub if x in "0123456789"]) != isub or isub == "":
         if filtro == []:
             listaSubsF = [listaSubs[x][:2]+[x] for x in range(len(listaSubs))]

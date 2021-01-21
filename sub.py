@@ -49,7 +49,7 @@ nombres = [ruta[len(ruta) - [ruta[x] for x in range(len(ruta)-1,-1,-1)].index("/
 
 #IMPRIME PANTALLA
 print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
-titulo = "SUB4TIME Beta v1.4.1"
+titulo = "SUB4TIME Beta v1.4.2"
 titulo2 = "Lista"
 print(((num_cols-len(titulo))//2)*" " + titulo)
 print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
@@ -230,7 +230,8 @@ if len(ruta_sub) > 1:
     os.system("clear")
     print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
     for x in range(len(ruta_sub)):
-        print(str(x) + ": " + ruta_sub[x][4:])
+        indice = colored(str(x), 'green', attrs=['bold', 'dark'])
+        print(indice + ": " + ruta_sub[x][4:])
     print(colored(num_cols*"-", 'blue', attrs=['bold', 'dark']))
     nsub = int(input("Ingresa el número de subtítulo: "))
 else:

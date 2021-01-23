@@ -49,7 +49,7 @@ nombres = [ruta[len(ruta) - [ruta[x] for x in range(len(ruta)-1,-1,-1)].index("/
 
 #IMPRIME PANTALLA
 print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
-titulo = "SUB4TIME Beta v1.5.3"
+titulo = "SUB4TIME Beta v1.5.4"
 titulo2 = "Lista"
 print(((num_cols-len(titulo))//2)*" " + titulo)
 print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
@@ -251,4 +251,4 @@ os.system('mv "' + ruta_sub[nsub] + '" "' + videos[iv][:-4] + ext + '"')
 os.system("rm -r tmp")
 
 print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
-print("listo")
+i = input("Listo. Presione Enter para salir.")

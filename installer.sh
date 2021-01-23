@@ -6,8 +6,8 @@ pkg install -y unrar
 pkg install -y readline
 pip install termcolor
 echo "clear" >> ../usr/etc/bash.bashrc
-echo "alias sub='python /data/data/com.termux/files/usr/share/sub4time/sub4time/sub.py'" >> ../usr/etc/bash.bashrc
+echo "alias sub='exec python /data/data/com.termux/files/usr/share/sub4time/sub4time/sub.py'" >> ../usr/etc/bash.bashrc
 clear
 termux-setup-storage
-echo "Instalación completa. Reinicia Termux."
-kill -9 $PPID
+echo "Instalación completa. Presiona Enter para salir e inicia Termux de nuevo."
+read listo

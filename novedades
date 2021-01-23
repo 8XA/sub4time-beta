@@ -1,2 +1,1 @@
-- Habilita las flechas para navegar inputs previos
-- El instalador agrega correctamente la dependencia requerida en la característica arriba mencionada
+- Mejora la instalación y el proceso de salida. Ya no mata procesos de manera bruta.

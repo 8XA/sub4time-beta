@@ -75,7 +75,7 @@ def imprimevideos(rvids, num_cols):
 #OPCIONES DE LA PANTALLA PRINCIPAL
 readline.clear_history()
 iv = "."
-while iv == ".":
+while "".join([x for x in iv if x in "0123456789"]) != iv or iv == "":
     imprimevideos(rvids, num_cols)
 
     iv = input("Número de video: ")

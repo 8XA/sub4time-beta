@@ -4,12 +4,22 @@ import os, curses, sys, string, readline
 from modulos.subs import subs
 from modulos.descarga import descarga
 from modulos.update import update
+from modulos.navegador import navegar
 from termcolor import colored
 
 
+ruta_conf = "/data/data/com.termux/files/usr/share/sub4time/ruta_videos"
+#ruta_conf = "./ruta_videos"
+if not os.path.isfile(ruta_conf):
+    rvids = os.popen("pwd").read()[:-1]
+else:
+    with open(ruta_conf,"r") as file:
+        rvids = file.readlines()[0]
+if rvids[-1:] == "\n":
+    rvids = rvids[:-1]
+
 rabs = "/data/data/com.termux/files/home/"
-rabs = ""
-rvids = "storage/shared/time4popcorn/downloads"
+#rabs = ""
 
 
 #FUNCIÓN SALIR
@@ -29,44 +39,55 @@ def numcols():
 num_cols = numcols()
 
 
-#ACTUALIZAR
-if update(num_cols) == 1:
-    print("Debes reiniciar Termux.")
-    salir()
+def imprimevideos(rvids, num_cols):
+    global extensiones, videos, nombres
+
+    #VIDEOS CON SU RUTA
+    extensiones = ["mp4", "mkv", "avi"]
+    videos = []
+    os.system("clear")
+    print("Buscando videos en la ruta especificada y sus subdirectorios...")
+    for ext in extensiones:
+        videos += os.popen("find '" + rvids + "' -iname *." + ext).read().split("\n")
+    videos = [video for video in videos if video != ""]
+    #NOMBRES DE LOS VIDEOS
+    nombres = sorted([ruta[len(ruta) - [ruta[x] for x in range(len(ruta)-1,-1,-1)].index("/"):] for ruta in videos])
+
+    #IMPRIME PANTALLA
+    os.system("clear")
+    print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
+    titulo = "SUB4TIME Beta v1.6.0"
+    titulo2 = "Lista"
+    print(((num_cols-len(titulo))//2)*" " + titulo)
+    print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
+    print(((num_cols-len(titulo2))//2)*" " + titulo2)
+
+    #IMPRIME NOMBRES DE VIDEOS
+    for x in range(len(nombres)):
+        print(num_cols*"-")
+        indice = colored(str(x), 'green', attrs=['bold', 'dark'])
+        print(indice + ": " + nombres[x])
+
+    print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
+    return 0
 
 
-#VIDEOS CON SU RUTA
-extensiones = ["mp4", "mkv", "avi"]
-videos = []
-for ext in extensiones:
-    videos += os.popen("find '" + rvids + "' -iname *." + ext).read().split("\n")
-videos = [video for video in videos if video != ""]
-
-
-#NOMBRES DE LOS VIDEOS
-nombres = [ruta[len(ruta) - [ruta[x] for x in range(len(ruta)-1,-1,-1)].index("/"):] for ruta in videos]
-
-
-#IMPRIME PANTALLA
-print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
-titulo = "SUB4TIME Beta v1.5.4"
-titulo2 = "Lista"
-print(((num_cols-len(titulo))//2)*" " + titulo)
-print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
-print(((num_cols-len(titulo2))//2)*" " + titulo2)
-
-
-#IMPRIME NOMBRES DE VIDEOS
-for x in range(len(nombres)):
-    print(num_cols*"-")
-    indice = colored(str(x), 'green', attrs=['bold', 'dark'])
-    print(indice + ": " + nombres[x])
-
-
-#SELECCIONA NOMBRE DE VIDEO
-print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
+#OPCIONES DE LA PANTALLA PRINCIPAL
 readline.clear_history()
-iv = int(input("Número de video: "))
+iv = "."
+while iv == ".":
+    imprimevideos(rvids, num_cols)
+
+    iv = input("Número de video: ")
+    if iv == ".":
+        rvids = navegar(num_cols, rvids, ruta_conf)
+
+    #ACTUALIZAR
+    elif iv == "act":
+        if update(num_cols) == 1:
+            print("Debes reiniciar Termux.")
+            salir()
+iv = int(iv)
 
 
 #LISTA DE PALABRAS PARA BÚSQUEDA

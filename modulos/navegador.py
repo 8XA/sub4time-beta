@@ -13,7 +13,7 @@ def navegar(num_cols, rvids, guardar):
         print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
         print(((num_cols-len(titulo))//2)*" " + titulo)
         print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
-        print("/".join(ruta) + "\n")
+        print("storage/" + "/".join(ruta[8:]) + "\n")
 
         carpetas = sorted([x.path.split("/")[-1:][0] for x in os.scandir("/".join(ruta)) if x.is_dir()])
         

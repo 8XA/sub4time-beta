@@ -23,6 +23,8 @@ def navegar(num_cols, rvids, guardar):
         print(colored(num_cols*"-", 'blue', attrs=['bold', 'dark']))
         indice = colored("..", 'green', attrs=['bold', 'dark'])
         print(indice + ": Directorio anterior")
+        indice = colored("Enter", 'green', attrs=['bold', 'dark'])
+        print(indice + ": Aceptar")
 
         print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
         accion = input(": ")
@@ -35,7 +37,7 @@ def navegar(num_cols, rvids, guardar):
             if len(carpetas) > int(accion) >= 0:
                 ruta.append(carpetas[int(accion)])
         elif accion == "..":
-            if len(ruta) > 2:
+            if len(ruta) > 8:
                 ruta.pop()
         else:
             pass

@@ -46,7 +46,7 @@ def imprimevideos(rvids, num_cols):
     extensiones = ["mp4", "mkv", "avi"]
     videos = []
     os.system("clear")
-    print("Buscando videos en la ruta especificada y sus subdirectorios...")
+    print("Buscando videos en la ruta especificada y sus subdirectorios inmediatos...")
     for ext in extensiones:
         videos += os.popen("find '" + rvids + "' -iname *." + ext).read().split("\n")
     videos = [video for video in videos if video != ""]
@@ -56,7 +56,7 @@ def imprimevideos(rvids, num_cols):
     #IMPRIME PANTALLA
     os.system("clear")
     print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
-    titulo = "SUB4TIME Beta v1.6.2"
+    titulo = "SUB4TIME Beta v1.6.3"
     titulo2 = "Lista"
     print(((num_cols-len(titulo))//2)*" " + titulo)
     print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
@@ -75,7 +75,7 @@ def imprimevideos(rvids, num_cols):
 #OPCIONES DE LA PANTALLA PRINCIPAL
 readline.clear_history()
 iv = "."
-while "".join([x for x in iv if x in "0123456789"]) != iv or iv == "":
+while type(iv) != type(0):
     imprimevideos(rvids, num_cols)
 
     iv = input("Número de video: ")
@@ -88,10 +88,8 @@ while "".join([x for x in iv if x in "0123456789"]) != iv or iv == "":
             i = input("Debes reiniciar Termux.")
             salir()
     elif "".join([x for x in iv if x in "0123456789"]) == iv and len(iv) > 0:
-        if 0 >= int(iv) < len(nombres):
+        if int(iv) < len(nombres):
             iv = int(iv)
-        else:
-            iv = "."
 
 
 #LISTA DE PALABRAS PARA BÚSQUEDA

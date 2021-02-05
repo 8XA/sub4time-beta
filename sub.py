@@ -11,7 +11,7 @@ from termcolor import colored
 ruta_conf = "/data/data/com.termux/files/usr/share/sub4time/ruta_videos"
 #ruta_conf = "./ruta_videos"
 if not os.path.isfile(ruta_conf):
-    rvids = os.popen("pwd").read()[:-1]
+    rvids = "/data/data/com.termux/files/usr/share"
 else:
     with open(ruta_conf,"r") as file:
         rvids = file.readlines()[0]
@@ -56,7 +56,7 @@ def imprimevideos(rvids, num_cols):
     #IMPRIME PANTALLA
     os.system("clear")
     print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
-    titulo = "SUB4TIME Beta v1.6.6"
+    titulo = "SUB4TIME Beta v1.6.7"
     titulo2 = "Lista"
     print(((num_cols-len(titulo))//2)*" " + titulo)
     print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))

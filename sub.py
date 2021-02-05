@@ -56,7 +56,7 @@ def imprimevideos(rvids, num_cols):
     #IMPRIME PANTALLA
     os.system("clear")
     print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
-    titulo = "SUB4TIME Beta v1.6.3"
+    titulo = "SUB4TIME Beta v1.6.4"
     titulo2 = "Lista"
     print(((num_cols-len(titulo))//2)*" " + titulo)
     print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
@@ -78,7 +78,7 @@ iv = "."
 while type(iv) != type(0):
     imprimevideos(rvids, num_cols)
 
-    iv = input("Número de video: ")
+    iv = input("Número de video ('s': salir | 'act: actualizar'): ")
     if iv == ".":
         rvids = navegar(num_cols, rvids, ruta_conf)
 
@@ -87,9 +87,13 @@ while type(iv) != type(0):
         if update(num_cols) == 1:
             i = input("Debes reiniciar Termux.")
             salir()
+
     elif "".join([x for x in iv if x in "0123456789"]) == iv and len(iv) > 0:
         if int(iv) < len(nombres):
             iv = int(iv)
+    
+    elif iv.lower() == "s":
+        salir()
 
 
 #LISTA DE PALABRAS PARA BÚSQUEDA

@@ -1,6 +1,6 @@
 #!/bin/env python
 
-import os, curses, sys, string, readline
+import os, curses, sys, readline
 from modulos.subs import subs
 from modulos.descarga import descarga
 from modulos.update import update
@@ -56,7 +56,7 @@ def imprimevideos(rvids, num_cols):
     #IMPRIME PANTALLA
     os.system("clear")
     print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
-    titulo = "SUB4TIME Beta v1.6.4"
+    titulo = "SUB4TIME Beta v1.6.5"
     titulo2 = "Lista"
     print(((num_cols-len(titulo))//2)*" " + titulo)
     print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
@@ -78,7 +78,7 @@ iv = "."
 while type(iv) != type(0):
     imprimevideos(rvids, num_cols)
 
-    iv = input("Número de video ('s': salir | 'act: actualizar'): ")
+    iv = input("Número de video ('s': salir | 'act: actualizar' | '.': Cambiar carpeta): ")
     if iv == ".":
         rvids = navegar(num_cols, rvids, ruta_conf)
 
@@ -161,7 +161,6 @@ if urlDirecta == False:
 
     #DEFINE LOS SUBTITULOS A MOSTRAR
     isub, subxpag, filtro, pagina = "", 50, [], 0
-    #letras = string.ascii_letters + "ÁÉÍÓÚÑáéíóúñ"
     readline.clear_history()
     while "".join([x for x in isub if x in "0123456789"]) != isub or isub == "":
         if filtro == []:

@@ -51,12 +51,12 @@ def imprimevideos(rvids, num_cols):
         videos += os.popen("find '" + rvids + "' -iname *." + ext).read().split("\n")
     videos = [video for video in videos if video != ""]
     #NOMBRES DE LOS VIDEOS
-    nombres = sorted([ruta[len(ruta) - [ruta[x] for x in range(len(ruta)-1,-1,-1)].index("/"):] for ruta in videos])
+    nombres = sorted([ruta[len(ruta) - [ruta[x] for x in range(len(ruta)-1,-1,-1)].index("/"):] for ruta in videos], key=str.casefold)
 
     #IMPRIME PANTALLA
     os.system("clear")
     print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
-    titulo = "SUB4TIME Beta v1.6.1"
+    titulo = "SUB4TIME Beta v1.6.2"
     titulo2 = "Lista"
     print(((num_cols-len(titulo))//2)*" " + titulo)
     print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
@@ -87,7 +87,11 @@ while "".join([x for x in iv if x in "0123456789"]) != iv or iv == "":
         if update(num_cols) == 1:
             i = input("Debes reiniciar Termux.")
             salir()
-iv = int(iv)
+    elif "".join([x for x in iv if x in "0123456789"]) == iv and len(iv) > 0:
+        if 0 >= int(iv) < len(nombres):
+            iv = int(iv)
+        else:
+            iv = "."
 
 
 #LISTA DE PALABRAS PARA BÚSQUEDA

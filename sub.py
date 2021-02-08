@@ -56,7 +56,7 @@ def imprimevideos(rvids, num_cols):
     #IMPRIME PANTALLA
     os.system("clear")
     print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
-    titulo = "SUB4TIME Beta v1.6.9"
+    titulo = "SUB4TIME Beta v1.6.10"
     titulo2 = "Lista"
     print(((num_cols-len(titulo))//2)*" " + titulo)
     print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))

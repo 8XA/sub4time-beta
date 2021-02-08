@@ -251,10 +251,8 @@ if os.popen("find tmp -iname *.rar").read() != "":
 #SUBTITULOS DESCOMPRIMIDOS COMO LISTA DE RUTAS
 if os.popen("find tmp -iname *.srt").read() != "":
     ruta_sub = [ruta for ruta in os.popen("find tmp -iname *.srt").read().split("\n") if ruta != ""]
-    ext = ".srt"
-elif os.popen("find tmp -iname *.ssa").read() != "":
-    ruta_sub = [ruta for ruta in os.popen("find tmp -iname *.ssa").read().split("\n") if ruta != ""]
-    ext = ".ssa"
+if os.popen("find tmp -iname *.ssa").read() != "":
+    ruta_sub += [ruta for ruta in os.popen("find tmp -iname *.ssa").read().split("\n") if ruta != ""]
 
 
 #IMPRESIÓN DE OPCIONES DE UN SOLO COMPRIMIDO
@@ -273,7 +271,7 @@ else:
 #MUEVE EL SUBTITULO ELEGIDO A LA CARPETA DE LA PELICULA
 print(colored(num_cols*"-", 'blue', attrs=['bold', 'dark']))
 print("Asignando subtítulo...")
-os.system('mv "' + ruta_sub[nsub] + '" "' + videos[iv][:-4] + ext + '"')
+os.system('mv "' + ruta_sub[nsub] + '" "' + videos[iv][:-4] + ruta_sub[nsub][-4:] + '"')
 os.system("rm -r tmp")
 
 print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))

@@ -4,6 +4,7 @@ pkg install -y wget
 pkg install -y iconv
 pkg install -y unrar
 pkg install -y readline
+pkg install -y file
 pip install termcolor
 echo "alias sub='exec python /data/data/com.termux/files/usr/share/sub4time/sub4time/sub.py'" >> ../usr/etc/bash.bashrc
 clear

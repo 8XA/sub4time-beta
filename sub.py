@@ -51,12 +51,12 @@ def imprimevideos(rvids, num_cols):
         videos += os.popen("find '" + rvids + "' -iname *." + ext).read().split("\n")
     videos = [video for video in videos if video != ""]
     #NOMBRES DE LOS VIDEOS
-    nombres = sorted([ruta[len(ruta) - [ruta[x] for x in range(len(ruta)-1,-1,-1)].index("/"):] for ruta in videos], key=str.casefold)
+    nombres = [ruta[len(ruta) - [ruta[x] for x in range(len(ruta)-1,-1,-1)].index("/"):] for ruta in videos]
 
     #IMPRIME PANTALLA
     os.system("clear")
     print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
-    titulo = "SUB4TIME Beta v1.6.10"
+    titulo = "SUB4TIME Beta v1.7.0"
     titulo2 = "Lista"
     print(((num_cols-len(titulo))//2)*" " + titulo)
     print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
@@ -268,11 +268,16 @@ else:
     nsub = 0
 
 
-#MUEVE EL SUBTITULO ELEGIDO A LA CARPETA DE LA PELICULA
+#CODIFICA EL SUBTITULO ELEGIDO EN LA CARPETA DE LA PELICULA
 print(colored(num_cols*"-", 'blue', attrs=['bold', 'dark']))
-print("Asignando subtítulo...")
-os.system('mv "' + ruta_sub[nsub] + '" "' + videos[iv][:-4] + ruta_sub[nsub][-4:] + '"')
-os.system("rm -r tmp")
+print("Recodificando y asignando subtítulo...")
+codextract = os.popen("file --mime-encoding " + ruta_sub[nsub]).read()
+encoding = codextract[codextract.index(":")+2:-1]#Codificación original
+os.system('iconv --from-code=' + encoding + ' --to-code=utf-8 "' + ruta_sub[nsub] + '" > "' + videos[iv][:-4] + ruta_sub[nsub][-4:] + '"')
 
+
+#Limpia temporales
+os.system("rm -r tmp")
 print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
 i = input("Listo. Presione Enter para salir.")
+

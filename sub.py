@@ -56,7 +56,7 @@ def imprimevideos(rvids, num_cols):
     #IMPRIME PANTALLA
     os.system("clear")
     print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
-    titulo = "SUB4TIME Beta v1.7.1"
+    titulo = "SUB4TIME Beta v1.7.2"
     titulo2 = "Lista"
     print(((num_cols-len(titulo))//2)*" " + titulo)
     print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
@@ -283,7 +283,8 @@ else:
 #CODIFICA EL SUBTITULO ELEGIDO EN LA CARPETA DE LA PELICULA
 print(colored(num_cols*"-", 'blue', attrs=['bold', 'dark']))
 print("Recodificando y asignando subtítulo...")
-codextract = os.popen("file --mime-encoding " + ruta_sub[nsub]).read()
+print(colored(num_cols*"-", 'blue', attrs=['bold', 'dark']))
+codextract = os.popen("file --mime-encoding '" + ruta_sub[nsub] + "'").read()
 encoding = codextract[codextract.index(":")+2:-1]#Codificación original
 os.system('iconv --from-code=' + encoding + ' --to-code=utf-8 "' + ruta_sub[nsub] + '" > "' + videos[iv][:-4] + ruta_sub[nsub][-4:] + '"')
 
@@ -292,4 +293,3 @@ os.system('iconv --from-code=' + encoding + ' --to-code=utf-8 "' + ruta_sub[nsub
 os.system("rm -r tmp")
 print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
 i = input("Listo. Presione Enter para salir.")
-

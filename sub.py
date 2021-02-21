@@ -56,7 +56,7 @@ def imprimevideos(rvids, num_cols):
     #IMPRIME PANTALLA
     os.system("clear")
     print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
-    titulo = "SUB4TIME Beta v1.7.0"
+    titulo = "SUB4TIME Beta v1.7.1"
     titulo2 = "Lista"
     print(((num_cols-len(titulo))//2)*" " + titulo)
     print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
@@ -114,7 +114,6 @@ while busqueda_correcta.lower() != "s":
         print(indice + ": " + buscar[x])
 
     #PALABRAS DE BUSQUEDA
-    buscar_depurado = []
     print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
     print(((num_cols-9)//2)*" " + "OPCIONES:")
     print(colored(num_cols*"-", 'blue', attrs=['bold', 'dark']))
@@ -133,20 +132,33 @@ while busqueda_correcta.lower() != "s":
     elif ibusq.lower() == "t":
         buscar_depurado = buscar
     #SI ES UNA SELECCION DE PALABRAS
-    elif "".join([x for x in ibusq if x in "0123456789,"]) == ibusq:
-        buscar_depurado = [buscar[int(indice)] for indice in [x for x in ibusq.split(",") if x != ""]]
+    elif "".join([x for x in ibusq if x in "0123456789,-"]) == ibusq:
+        rangos_separados = ibusq.split(",")
+        buscar_depurado = []
+        try:
+            for rango in rangos_separados:
+                if "-" in rango:
+                    rango_i = rango.split("-")
+                    buscar_depurado += [buscar[x] for x in range(int(rango_i[0]),int(rango_i[1])+1)]
+                else:
+                    buscar_depurado.append(buscar[int(rango)])
+        except:
+            buscar_depurado = []
     #SI ES BÚSQUEDA PERSONALIZADA
     else:
         buscar_depurado = ibusq.split(" ")
 
     #CORROBORANDO INFORMACIÓN DE BÚSQUEDA
-    if urlDirecta == False:
-        print("\nTus palabras de búsqueda son:")
-        print(buscar_depurado)
+    if len(buscar_depurado) != 0:
+        if urlDirecta == False:
+            print("\nTus palabras de búsqueda son:")
+            print(buscar_depurado)
+        else:
+            print("\nSeleccionaste descargar el subtítulo:\n----------\n" + ibusq + "\n----------\nY asignarlo a la película: " + nombres[iv])
+        print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
+        busqueda_correcta = input("Es esto correcto (s|n)? ")
     else:
-        print("\nSeleccionaste descargar el subtítulo:\n----------\n" + ibusq + "\n----------\nY asignarlo a la película: " + nombres[iv])
-    print(colored(num_cols*"=", 'blue', attrs=['bold', 'dark']))
-    busqueda_correcta = input("Es esto correcto (s|n)? ")
+        busqueda_correcta = 'n'
 os.system("clear")
 
 
